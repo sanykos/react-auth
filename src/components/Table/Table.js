@@ -8,7 +8,7 @@ export default props => {
             <thead>
                 <tr>
                     <th>first_name</th>
-                    <th>id</th>
+                    <th onClick={props.onSort.bind(null, 'id')}>id<sup>{props.sort}</sup></th>
                     <th>last_name</th>
                     <th>username</th>
                 </tr>

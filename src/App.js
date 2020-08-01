@@ -32,6 +32,17 @@ class App extends Component {
     })
   }
 
+  onSort  = sortField =>  {
+    const clonedData = this.state.data.concat()
+    const sort = this.state.sort === 'asc' ? 'desc' : 'asc'
+    const data = _.orderBy(clonedData, sortField, sort)
+    this.setState({
+      data: data,
+      sort: sort,
+      sortField: sortField
+    })
+  }
+
   searchHandler = (search) => {
     this.setState({search})
   }
@@ -48,12 +59,7 @@ class App extends Component {
   }
 
   render() {
-    //const {data} = this.state;
     const filteredData = this.getFilteredData()
-    //console.log(users);
-    // data.map(user => {
-    //   console.log(user)
-    // })
     return(
       <div className="container">
         <h1>Users</h1>
@@ -63,6 +69,9 @@ class App extends Component {
           />
           <Table 
               data={filteredData}
+              onSort={this.onSort}
+              sort={this.state.sort}
+              sortField={this.state.sortField}
             />
         </Fragment>
       </div>
