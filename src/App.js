@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import Table from './components/Table/Table'
 import TableSearch from './components/TableSearch/TableSearch'
+import Login from './components/Login/Login'
 import _ from 'lodash'
 import axios from 'axios'
 
@@ -23,7 +24,6 @@ class App extends Component {
       }
     }).then(response => {
       const {data} = response
-     // console.log(users)
         this.setState({
           data
         })
@@ -63,6 +63,9 @@ class App extends Component {
     return(
       <div className="container">
         <h1>Users</h1>
+        <Fragment>
+           <Login/>
+        </Fragment>
         <Fragment>
           <TableSearch 
             onSearch={this.searchHandler}
