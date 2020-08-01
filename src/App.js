@@ -1,26 +1,74 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import _ from 'lodash'
+import axios from 'axios'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+
+class App extends Component {
+
+  state = {
+    isLoading: false,
+    data : [],
+    search: '',
+    sort: 'asc',
+    sortField: 'id'
+  }
+
+
+  componentDidMount() {
+    axios.get('http://emphasoft-test-assignment.herokuapp.com/api/v1/users/', {
+      headers: {
+        'Content-Type': "application/json",
+        Authorization: "Token 781bd9f1de084f4daa7ba2aa8a71a2eab855354e"
+      }
+    }).then(response => {
+      const {data} = response
+     // console.log(users)
+        this.setState({
+          data
+        })
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
+  render() {
+    const {data} = this.state;
+    //console.log(users);
+    data.map(user => {
+      console.log(user)
+    })
+    return(
+      <div className="container">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>first_name</th>
+              <th>id</th>
+              <th>last_name</th>
+              <th>username</th>
+            </tr>
+            </thead>
+            <tbody>
+              {
+                data.map(user => (
+                  <tr key={user.id}>
+                    <td>{user.first_name}</td>
+                    <td>{user.id}</td>
+                    <td>{user.last_name}</td>
+                    <td>{user.username}</td>
+                  </tr>
+                ))
+              }
+            </tbody>  
+        </table>
+      </div>
+    )
+  }
+
 }
 
-export default App;
+export default App
+
+
