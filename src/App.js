@@ -1,10 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import Table from './components/Table/Table'
+import TableSearch from './components/TableSearch/TableSearch'
 import _ from 'lodash'
 import axios from 'axios'
-
-
-
 
 class App extends Component {
 
@@ -34,18 +32,39 @@ class App extends Component {
     })
   }
 
-  render() {
-    const {data} = this.state;
-    //console.log(users);
-    data.map(user => {
-      console.log(user)
+  searchHandler = (search) => {
+    this.setState({search})
+  }
+
+  getFilteredData() {
+    const {data, search} = this.state
+    if(!search) {
+      return data
+    }
+    return data.filter(user => {
+      return user['username'].toLowerCase().includes(search.toLowerCase())
     })
+
+  }
+
+  render() {
+    //const {data} = this.state;
+    const filteredData = this.getFilteredData()
+    //console.log(users);
+    // data.map(user => {
+    //   console.log(user)
+    // })
     return(
       <div className="container">
         <h1>Users</h1>
-              <Table 
-                data={data}
-              />
+        <Fragment>
+          <TableSearch 
+            onSearch={this.searchHandler}
+          />
+          <Table 
+              data={filteredData}
+            />
+        </Fragment>
       </div>
     )
   }
