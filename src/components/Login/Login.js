@@ -5,6 +5,7 @@ import axios from 'axios'
 class Login extends Component {
 
     state = {
+        isFormValid: false,
         formControls: {
             username: {
                 value: '',
@@ -80,8 +81,14 @@ class Login extends Component {
         control.touched = true
         control.valid = this.validateControl(control.value, control.validation)
         formControls[controlName] = control
+
+        let isFormValid = true
+        Object.keys(formControls).forEach(name => {
+            isFormValid = formControls[name].valid && isFormValid
+        })
+
         this.setState({
-            formControls
+            formControls, isFormValid
         })
     }
 
@@ -150,7 +157,7 @@ class Login extends Component {
                     data-field-name={'password'}
                     value={password}/>
                 </div> */}
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary" disabled={!this.state.isFormValid}>Войти</button>
             </form>
             </div>
         )
