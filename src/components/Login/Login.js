@@ -40,7 +40,7 @@ class Login extends Component {
 
     }
 
-    submitHandler = async (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault()
         const {username, password} = this.state
        try {
