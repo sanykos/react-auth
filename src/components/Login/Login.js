@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Input from '../Input/Input'
-import axios from 'axios'
+import axios from '../../axios/axios-swagger'
 
 class Login extends Component {
 
@@ -44,7 +44,7 @@ class Login extends Component {
         e.preventDefault()
         const {username, password} = this.state
        try {
-        const response = await axios.post('http://emphasoft-test-assignment.herokuapp.com/api-token-auth/',
+        const response = await axios.post('/api-token-auth/',
         {
             username: username,
             password: password

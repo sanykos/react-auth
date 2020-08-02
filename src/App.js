@@ -3,7 +3,7 @@ import Table from './components/Table/Table'
 import TableSearch from './components/TableSearch/TableSearch'
 import Login from './components/Login/Login'
 import _ from 'lodash'
-import axios from 'axios'
+import axios from './axios/axios-swagger'
 
 class App extends Component {
 
@@ -17,7 +17,7 @@ class App extends Component {
 
 
   componentDidMount() {
-    axios.get('http://emphasoft-test-assignment.herokuapp.com/api/v1/users/', {
+    axios.get('/api/v1/users/', {
       headers: {
         'Content-Type': "application/json",
         Authorization: "Token 781bd9f1de084f4daa7ba2aa8a71a2eab855354e"
