@@ -55,7 +55,6 @@ class App extends Component {
     return data.filter(user => {
       return user['username'].toLowerCase().includes(search.toLowerCase())
     })
-
   }
 
   render() {

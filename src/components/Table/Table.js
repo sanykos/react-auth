@@ -3,8 +3,8 @@ import React from 'react'
 
 export default props => {
     return (
+      
         <table className="table">
-            <table className="table">
             <thead>
                 <tr>
                     <th>first_name</th>
@@ -25,7 +25,7 @@ export default props => {
                     ))
                 }
             </tbody>  
-            </table>
         </table>
+
     )
 }
