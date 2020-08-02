@@ -1,0 +1,11 @@
+.form-group.invalid span {
+    color: red;
+}
+
+.form-group.invalid label {
+    color: red;
+}
+
+.form-group.invalid input {
+    border-color: red;
+}

@@ -5,12 +5,41 @@ import axios from 'axios'
 class Login extends Component {
 
     state = {
-        username: '',
-        password: '',
-        errorMessage: ''
+        formControls: {
+            username: {
+                value: '',
+                type: 'username',
+                label: 'username',
+                placeholder: 'Enter username',
+                errorMessage: 'Введети корректное имя пользователя',
+                valid: false,
+                touched: false,
+                validation: {
+                    required: true,
+                    minLength: 10
+                }
+            },
+            password: {
+                value: '',
+                type: 'password',
+                label: 'password',
+                placeholder: 'Enter password',
+                errorMessage: 'Введите корректный пароль',
+                valid: false,
+                touched: false,
+                validation: {
+                    required: true,
+                    password: true
+                }
+            }
+        }
     }
 
-    handleSubmit = async (e) => {
+    loginHandler = () => {
+
+    }
+
+    submitHandler = async (e) => {
         e.preventDefault()
         const {username, password} = this.state
        try {
@@ -28,13 +57,39 @@ class Login extends Component {
 
     }
 
-    handleChange = (e) => {
-        const value = e.currentTarget.value
-        const fieldName = e.currentTarget.dataset.fieldName
-        this.setState(prev => ({
-        ...prev,
-        [fieldName]: value,
-        }))
+    onChangeHandler = (event, controlName) => {
+        console.log(`${controlName}: `, event.target.value)
+    }
+
+    // handleChange = (e) => {
+    //     const value = e.currentTarget.value
+    //     const fieldName = e.currentTarget.dataset.fieldName
+    //     this.setState(prev => ({
+    //     ...prev,
+    //     [fieldName]: value,
+    //     }))
+    // }
+
+    renderInputs() {
+        const inputs = Object.keys(this.state.formControls).map((controlName, index) => {
+            //console.log(controlName)
+            const  control = this.state.formControls[controlName]
+            return (
+                <Input
+                    key={controlName + index}
+                    type={control.type}
+                    value={control.value}
+                    valid={control.valid}
+                    touched={control.touched}
+                    onChange={event => this.onChangeHandler(event, controlName)}
+                    label={control.label}
+                    placeholder={control.placeholder}
+                    shouldValidate={!!control.validation}
+                    errorMessage={control.errorMessage}
+                />
+            )
+        })
+        return inputs
     }
 
 
@@ -46,14 +101,16 @@ class Login extends Component {
             <div>
                 {errorMessage && <strong>{errorMessage}</strong>}
                 <form onSubmit={this.handleSubmit}>
-                    <Input 
+                    {this.renderInputs()}
+                    {/* <Input 
                         label="username"
                         placeholder="Enter username"
                     />
                     <Input 
                         label="password"
                         placeholder="Enter password"
-                    />
+                        errorMessage="ASDASDA"
+                    /> */}
                 {/* <div className="form-group">
                     <label htmlFor="exampleInputEmail1">Email address</label>
                     <input type="text" className="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username"
