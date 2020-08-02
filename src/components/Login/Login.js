@@ -29,7 +29,7 @@ class Login extends Component {
                 touched: false,
                 validation: {
                     required: true,
-                    password: true
+                    minLength: 10
                 }
             }
         }
@@ -57,8 +57,32 @@ class Login extends Component {
 
     }
 
+    validateControl(value, validation) {
+        if(!validation) {
+            return true
+        }
+        let isValid = true
+        if(validation.required) {
+            isValid = value.trim() !== '' && isValid
+        }
+        if(validation.minLength) {
+            isValid = value.length >= validation.minLength && isValid
+        }
+        return isValid
+    }
+
     onChangeHandler = (event, controlName) => {
-        console.log(`${controlName}: `, event.target.value)
+       // console.log(`${controlName}: `, event.target.value)
+        const formControls = {...this.state.formControls}
+        const control = {...formControls[controlName]}
+        
+        control.value = event.target.value
+        control.touched = true
+        control.valid = this.validateControl(control.value, control.validation)
+        formControls[controlName] = control
+        this.setState({
+            formControls
+        })
     }
 
     // handleChange = (e) => {
