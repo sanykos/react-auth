@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import Input from '../Input/Input'
-import axios from '../../axios/axios-swagger'
+import login from '../../store/actions/login'
 
 class Login extends Component {
 
@@ -35,27 +36,13 @@ class Login extends Component {
             }
         }
     }
-
-    // loginHandler = () => {
-
-    // }
-
-    handleSubmit = async (e) => {
+    handleSubmit = (e) => {
         e.preventDefault()
-       // const {username, password} = this.state
-       try {
-        const response = await axios.post('/api-token-auth/',
-        {
-            username: this.state.formControls.username.value,
-            password: this.state.formControls.password.value
-        })
-        console.log(response.data.token)
-       }catch(error) {
-           if(error) {
-            this.setState({errorMessage: 'Неверный логин или пароль'})
-           }
-       }
-
+       this.props.login(
+            this.state.formControls.username.value,
+            this.state.formControls.password.value,
+            true
+       )
     }
 
     validateControl(value, validation) {
@@ -94,7 +81,6 @@ class Login extends Component {
 
     renderInputs() {
         const inputs = Object.keys(this.state.formControls).map((controlName, index) => {
-            //console.log(controlName)
             const  control = this.state.formControls[controlName]
             return (
                 <Input
@@ -133,5 +119,10 @@ class Login extends Component {
 
 }
 
+function mapDispatchToProps(dispatch) {
+    return  {
+        login: (username, password, isLogin) => dispatch(login(username,password,isLogin) )
+    }
+}
 
-export default Login
+export default connect(null, mapDispatchToProps)(Login)
