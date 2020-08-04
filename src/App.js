@@ -5,6 +5,7 @@ import Login from './components/Login/Login'
 import UsersList from './components/UsersList/UsersList'
 import Logout from './components/Logout/Logout';
 import Home from './components/Home/Home';
+import Menu from './components/Navigation/Menu'
 
 
 class App extends Component {
@@ -31,7 +32,9 @@ class App extends Component {
 
     return(
       <div className="container">
-         {routes}
+          <Menu isAuthenticated={this.props.isAuthenticated}/>
+           {routes}
+         
       </div>
     )
   }
