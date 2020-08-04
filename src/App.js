@@ -6,9 +6,15 @@ import UsersList from './components/UsersList/UsersList'
 import Logout from './components/Logout/Logout';
 import Home from './components/Home/Home';
 import Menu from './components/Navigation/Menu'
+import { autoLogin } from './store/actions/login';
 
 
 class App extends Component {
+
+  componentDidMount() {
+    this.props.autoLogin()
+  }
+
   render() {
 
     let routes = (
@@ -48,6 +54,12 @@ function mapStateToProps(state) {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(App))
+function mapDispatchToProps(dispatch) {
+  return {
+    autoLogin: () => dispatch(autoLogin())
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
 
 

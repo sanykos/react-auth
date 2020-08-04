@@ -11,6 +11,7 @@ class Menu extends Component {
                     <NavLink
                         to={link.to}
                         exact={link.exact}
+                        className="nav-link"
                     >
                         {link.label}
                     </NavLink>
@@ -34,7 +35,7 @@ class Menu extends Component {
 
         return (
             <React.Fragment>
-                <nav>
+                <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     <ul className="navbar-nav">
                         {this.renderLinks(links)}
                     </ul>

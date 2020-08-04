@@ -21,6 +21,17 @@ export function loginSuccess(token) {
     }
 }
 
+export function autoLogin() {
+    return dispatch => {
+        const token = localStorage.getItem('Token')
+        if(!token) {
+            dispatch(logout())
+        }else {
+            dispatch(loginSuccess(token))
+        }
+    }
+}
+
 export function logout() {
     localStorage.removeItem('Token')
     return {
