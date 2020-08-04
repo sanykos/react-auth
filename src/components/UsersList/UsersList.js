@@ -16,10 +16,11 @@ class UsersList extends Component {
     }
 
     componentDidMount() {
+        let token = localStorage.getItem('Token')
         axios.get('/api/v1/users/', {
             headers: {
                 'Content-Type': "application/json",
-                Authorization: "Token 781bd9f1de084f4daa7ba2aa8a71a2eab855354e"
+                Authorization: `Token ${token}`
             }
         }).then(response => {
             const {data} = response
