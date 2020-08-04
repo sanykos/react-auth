@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import Input from '../Input/Input'
-import axios from '../../axios/axios-swagger'
+import login from '../../store/actions/login'
 
 class Login extends Component {
 
@@ -17,7 +18,7 @@ class Login extends Component {
                 touched: false,
                 validation: {
                     required: true,
-                    minLength: 10
+                    minLength: 1
                 }
             },
             password: {
@@ -30,32 +31,18 @@ class Login extends Component {
                 touched: false,
                 validation: {
                     required: true,
-                    minLength: 10
+                    minLength: 1
                 }
             }
         }
     }
-
-    loginHandler = () => {
-
-    }
-
-    submitHandler = async (e) => {
+    handleSubmit = (e) => {
         e.preventDefault()
-        const {username, password} = this.state
-       try {
-        const response = await axios.post('/api-token-auth/',
-        {
-            username: username,
-            password: password
-        })
-        //console.log(response + 'dsadsad')
-       }catch(error) {
-           if(error) {
-            this.setState({errorMessage: 'Неверный логин или пароль'})
-           }
-       }
-
+       this.props.login(
+            this.state.formControls.username.value,
+            this.state.formControls.password.value,
+            true
+       )
     }
 
     validateControl(value, validation) {
@@ -92,18 +79,8 @@ class Login extends Component {
         })
     }
 
-    // handleChange = (e) => {
-    //     const value = e.currentTarget.value
-    //     const fieldName = e.currentTarget.dataset.fieldName
-    //     this.setState(prev => ({
-    //     ...prev,
-    //     [fieldName]: value,
-    //     }))
-    // }
-
     renderInputs() {
         const inputs = Object.keys(this.state.formControls).map((controlName, index) => {
-            //console.log(controlName)
             const  control = this.state.formControls[controlName]
             return (
                 <Input
@@ -125,38 +102,14 @@ class Login extends Component {
 
 
     render() {
-        console.log(this.state)
-        const { username, password, errorMessage} = this.state
+        //console.log(this.state)
+       // const { username, password, errorMessage} = this.state
         return(
             
             <div>
-                {errorMessage && <strong>{errorMessage}</strong>}
+                {/* {errorMessage && <strong>{errorMessage}</strong>} */}
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInputs()}
-                    {/* <Input 
-                        label="username"
-                        placeholder="Enter username"
-                    />
-                    <Input 
-                        label="password"
-                        placeholder="Enter password"
-                        errorMessage="ASDASDA"
-                    /> */}
-                {/* <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">Email address</label>
-                    <input type="text" className="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username"
-                    data-field-name={'username'}
-                    onChange={this.handleChange}
-                    value={username}/>
-                    <small className="form-text text-muted">We'll never share your email with anyone else.</small>
-                </div> */}
-                {/* <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Password</label>
-                    <input type="text" name="password" className="form-control"  placeholder="Password"
-                    onChange={this.handleChange}
-                    data-field-name={'password'}
-                    value={password}/>
-                </div> */}
                 <button type="submit" className="btn btn-primary" disabled={!this.state.isFormValid}>Войти</button>
             </form>
             </div>
@@ -166,5 +119,10 @@ class Login extends Component {
 
 }
 
+function mapDispatchToProps(dispatch) {
+    return  {
+        login: (username, password, isLogin) => dispatch(login(username,password,isLogin) )
+    }
+}
 
-export default Login
+export default connect(null, mapDispatchToProps)(Login)

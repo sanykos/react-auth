@@ -1,87 +1,65 @@
-import React, {Component, Fragment} from 'react';
-import Table from './components/Table/Table'
-import TableSearch from './components/TableSearch/TableSearch'
+import React, {Component} from 'react';
+import {Route, Switch, Redirect, withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
 import Login from './components/Login/Login'
-import _ from 'lodash'
-import axios from './axios/axios-swagger'
+import UsersList from './components/UsersList/UsersList'
+import Logout from './components/Logout/Logout';
+import Home from './components/Home/Home';
+import Menu from './components/Navigation/Menu'
+import { autoLogin } from './store/actions/login';
+
 
 class App extends Component {
 
-  state = {
-    isLoading: false,
-    data : [],
-    search: '',
-    sort: 'asc',
-    sortField: 'id'
-  }
-
-
   componentDidMount() {
-    axios.get('/api/v1/users/', {
-      headers: {
-        'Content-Type': "application/json",
-        Authorization: "Token 781bd9f1de084f4daa7ba2aa8a71a2eab855354e"
-      }
-    }).then(response => {
-      const {data} = response
-        this.setState({
-          data
-        })
-    }).catch(error => {
-      console.log(error)
-    })
-  }
-
-  onSort  = sortField =>  {
-    const clonedData = this.state.data.concat()
-    const sort = this.state.sort === 'asc' ? 'desc' : 'asc'
-    const data = _.orderBy(clonedData, sortField, sort)
-    this.setState({
-      data: data,
-      sort: sort,
-      sortField: sortField
-    })
-  }
-
-  searchHandler = (search) => {
-    this.setState({search})
-  }
-
-  getFilteredData() {
-    const {data, search} = this.state
-    if(!search) {
-      return data
-    }
-    return data.filter(user => {
-      return user['username'].toLowerCase().includes(search.toLowerCase())
-    })
+    this.props.autoLogin()
   }
 
   render() {
-    const filteredData = this.getFilteredData()
+
+    let routes = (
+      <Switch>
+        <Route path="/login" component={Login} exact={false}/>
+        <Route path="/" component={Home} exact={true}/>
+        <Redirect to="/" />
+      </Switch>
+    )
+
+    if(this.props.isAuthenticated) {
+        routes = (
+          <Switch>
+            <Route path="/" component={Home} exact={true}/>
+            <Route path="/users" component={UsersList} exact={false}/>
+            <Route path="/logout" component={Logout} exact={false}/>
+            <Redirect to="/" />
+          </Switch>
+        )
+    }
+
     return(
       <div className="container">
-        <h1>Users</h1>
-        <Fragment>
-           <Login/>
-        </Fragment>
-        <Fragment>
-          <TableSearch 
-            onSearch={this.searchHandler}
-          />
-          <Table 
-              data={filteredData}
-              onSort={this.onSort}
-              sort={this.state.sort}
-              sortField={this.state.sortField}
-            />
-        </Fragment>
+          <Menu isAuthenticated={this.props.isAuthenticated}/>
+           {routes}
+         
       </div>
     )
   }
 
 }
 
-export default App
+function mapStateToProps(state) {
+ //console.log(state.login.token)
+  return {
+    isAuthenticated: !!state.login.token
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    autoLogin: () => dispatch(autoLogin())
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
 
 
