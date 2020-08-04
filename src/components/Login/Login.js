@@ -102,12 +102,12 @@ class Login extends Component {
 
 
     render() {
-        console.log(this.state)
-        const { username, password, errorMessage} = this.state
+        //console.log(this.state)
+       // const { username, password, errorMessage} = this.state
         return(
             
             <div>
-                {errorMessage && <strong>{errorMessage}</strong>}
+                {/* {errorMessage && <strong>{errorMessage}</strong>} */}
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInputs()}
                 <button type="submit" className="btn btn-primary" disabled={!this.state.isFormValid}>Войти</button>

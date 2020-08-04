@@ -8,6 +8,12 @@ export default props => {
         setvalue(event.target.value)
     }
 
+    const handleEnter = event => {
+        if(event.key === 'Enter') {
+            props.onSearch(value)
+        }
+    }
+
     return(
         <div className="input-group mb-3 mt-3">
             <div className="input-group-prepend">
@@ -16,6 +22,7 @@ export default props => {
             </div>
             <input type="text" className="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1"
                 onChange={valueChangeHandler}
+                onKeyPress={handleEnter}
                 value={value}
              />
         </div>
